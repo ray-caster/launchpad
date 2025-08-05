@@ -5,6 +5,7 @@ import os
 import traceback
 import hmac
 import hashlib
+import subprocess
 
 # 1. --- APP INITIALIZATION & CONFIGURATION ---
 app = Flask(__name__)
