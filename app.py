@@ -56,27 +56,41 @@ def send_async_email(app, msg):
 
 # 4. --- ROUTE DEFINITIONS ---
 @app.route('/git-webhook', methods=['POST'])
+@app.route('/git-webhook', methods=['POST'])
 def git_webhook():
     secret = os.environ.get("GITHUB_WEBHOOK_SECRET", "")
     signature = request.headers.get('X-Hub-Signature-256')
-    
+
+    print(">> SECRET from env:", secret, flush=True)
+    print(">> Signature header:", signature, flush=True)
+
     if not signature:
-        print("❌ No signature header received!", flush=True)
+        print("❌ No signature header received", flush=True)
         abort(403)
-    
-    sha_name, github_signature = signature.split('=')
+
+    try:
+        sha_name, github_signature = signature.split('=')
+    except Exception as e:
+        print("❌ Failed to parse signature header", flush=True)
+        abort(403)
+
     if sha_name != 'sha256':
-        print("❌ Unsupported SHA name", flush=True)
+        print("❌ Unsupported hash type:", sha_name, flush=True)
         abort(501)
 
     mac = hmac.new(secret.encode(), msg=request.data, digestmod=hashlib.sha256)
-    if not hmac.compare_digest(mac.hexdigest(), github_signature):
+    your_signature = mac.hexdigest()
+
+    print(">> Computed signature:", your_signature, flush=True)
+    print(">> GitHub signature:  ", github_signature, flush=True)
+
+    if not hmac.compare_digest(your_signature, github_signature):
         print("❌ Signature mismatch", flush=True)
         abort(403)
 
-    print("✅ Webhook authenticated successfully", flush=True)
+    print("✅ Webhook verified. Running pull script.", flush=True)
     subprocess.Popen(['/home/ubuntu/launchpad/git-auto-pull.sh'])
-    return 'Webhook received and verified.', 200
+    return 'Webhook verified.', 200
 
 # The original route for the contact/signup form.
 @app.route('/', methods=["GET", "POST"])
