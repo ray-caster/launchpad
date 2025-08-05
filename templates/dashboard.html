@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Launchpad.org</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap');
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen text-center p-4">
+    <div class="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 shadow-lg">
+        <h1 class="text-4xl font-bold text-white">🚀</h1>
+        <h2 class="mt-4 text-2xl font-bold text-white">Welcome to your Dashboard, {{ name }}!</h2>
+        <p class="mt-2 text-gray-400">You have successfully logged in.</p>
+        <div class="mt-6">
+            <a href="{{ url_for('logout') }}"
+               class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700">
+               <i class="fas fa-sign-out-alt mr-2"></i>
+               Log Out
+            </a>
+        </div>
+    </div>
+</body>
+</html>
