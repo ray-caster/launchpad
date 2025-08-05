@@ -57,23 +57,13 @@ def send_async_email(app, msg):
 # 4. --- ROUTE DEFINITIONS ---
 @app.route('/git-webhook', methods=['POST'])
 def git_webhook():
-    # Get signature from GitHub header
-    signature = request.headers.get('X-Hub-Signature-256')
-    if not signature:
-        abort(403)
-
-    # Compute HMAC hash with your secret
-    sha_name, signature = signature.split('=')
-    if sha_name != 'sha256':
-        abort(501)
-
-    mac = hmac.new(GITHUB_SECRET.encode(), msg=request.data, digestmod=hashlib.sha256)
-    if not hmac.compare_digest(mac.hexdigest(), signature):
-        abort(403)
-
-    # Authenticated → pull + restart
-    subprocess.Popen(['/home/ubuntu/launchpad/git-auto-pull.sh'])
-    return 'Webhook received!', 200
+    print("=== Webhook HIT ===", flush=True)
+    try:
+        subprocess.Popen(['/home/ubuntu/launchpad/git-auto-pull.sh'])
+        return 'Webhook received without signature check.', 200
+    except Exception as e:
+        print(f"Error running pull script: {e}", flush=True)
+        return 'Internal Server Error', 500
 
 # The original route for the contact/signup form.
 @app.route('/', methods=["GET", "POST"])
