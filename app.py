@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, abort
 from flask_mail import Mail, Message
 from threading import Thread
 import os
 import traceback
+import hmac
+import hashlib
 
 # 1. --- APP INITIALIZATION & CONFIGURATION ---
 app = Flask(__name__)
@@ -19,6 +21,7 @@ app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = ("Launchpad.org Notifications", os.environ.get('MAIL_USERNAME'))
 
+GITHUB_SECRET = os.environ.get("GITHUB_WEBHOOK_SECRET", "default")
 # This check warns you if email credentials aren't set, but allows the app to run.
 if not app.config['MAIL_USERNAME'] or not app.config['MAIL_PASSWORD']:
     print("WARNING: MAIL_USERNAME or MAIL_PASSWORD environment variables are not set. Email sending will be disabled.")
@@ -51,13 +54,25 @@ def send_async_email(app, msg):
 
 
 # 4. --- ROUTE DEFINITIONS ---
+@app.route('/git-webhook', methods=['POST'])
+def git_webhook():
+    # Get signature from GitHub header
+    signature = request.headers.get('X-Hub-Signature-256')
+    if not signature:
+        abort(403)
 
-@app.route('/envcheck')
-def envcheck():
-    return {
-        "MAIL_USERNAME": os.environ.get("MAIL_USERNAME"),
-        "MAIL_PASSWORD_SET": bool(os.environ.get("MAIL_PASSWORD"))
-    }
+    # Compute HMAC hash with your secret
+    sha_name, signature = signature.split('=')
+    if sha_name != 'sha256':
+        abort(501)
+
+    mac = hmac.new(GITHUB_SECRET.encode(), msg=request.data, digestmod=hashlib.sha256)
+    if not hmac.compare_digest(mac.hexdigest(), signature):
+        abort(403)
+
+    # Authenticated → pull + restart
+    subprocess.Popen(['/home/ubuntu/launchpad/git-auto-pull.sh'])
+    return 'Webhook received!', 200
 
 # The original route for the contact/signup form.
 @app.route('/', methods=["GET", "POST"])
