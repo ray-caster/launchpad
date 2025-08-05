@@ -36,7 +36,7 @@ mail = Mail(app)
 FAKE_USERS = {
     "user@example.com": {
         "password": "password123",
-        "name": "Demo Userman"
+        "name": "Demoman"
     }
 }
 
