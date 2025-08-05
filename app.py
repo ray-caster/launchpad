@@ -61,7 +61,7 @@ def git_webhook():
     signature = request.headers.get('X-Hub-Signature-256')
     
     if not signature:
-        print("❌ No signature header received", flush=True)
+        print("❌ No signature header received!", flush=True)
         abort(403)
     
     sha_name, github_signature = signature.split('=')
