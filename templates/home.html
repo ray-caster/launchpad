@@ -114,8 +114,8 @@
                 <a href="#footer-contact" class="text-gray-300 hover:text-white transition">Contact</a>
             </div>
             <div class="hidden lg:block">
-                <a href="#signup" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20">
-                    Sign Up
+                <a href="/login" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20">
+                    Join
                 </a>
             </div>
             <button id="mobile-menu-button" class="lg:hidden text-gray-300">
@@ -127,10 +127,10 @@
                     <a href="#programs" class="text-gray-300 hover:text-white transition">Programs</a>
                     <a href="#mission" class="text-gray-300 hover:text-white transition">Mission</a>
                     <a href="#team" class="text-gray-300 hover:text-white transition">Team</a>
-                    <a href="#signup" class="text-gray-300 hover:text-white transition">Sign Up</a>
+                    <a href="#signup" class="text-gray-300 hover:text-white transition">Newsletter</a>
                     <a href="#footer-contact" class="text-gray-300 hover:text-white transition">Contact</a>
-                    <a href="#signup" class="mt-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20 text-center">
-                        Sign Up
+                    <a href="/login" class="mt-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20 text-center">
+                        Join us
                     </a>
                 </div>
             </div>
@@ -816,7 +816,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(style);
     }
 
-    // Smooth scrolling for anchor links
+    // Enhanced smooth scrolling for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -826,11 +826,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                // The offset adjusts for the fixed navigation bar height
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
+                // Calculate the target position with offset for navbar
+                const navbarHeight = document.querySelector('nav').offsetHeight;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                
+                // Smooth scroll using requestAnimationFrame for better performance
+                const startPosition = window.pageYOffset;
+                const distance = targetPosition - startPosition;
+                const duration = 800; // milliseconds
+                let startTime = null;
+
+                function animation(currentTime) {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+                    window.scrollTo(0, run);
+                    if (timeElapsed < duration) requestAnimationFrame(animation);
+                }
+
+                // Easing function for smooth acceleration/deceleration
+                function easeInOutQuad(t, b, c, d) {
+                    t /= d/2;
+                    if (t < 1) return c/2*t*t + b;
+                    t--;
+                    return -c/2 * (t*(t-2) - 1) + b;
+                }
+
+                requestAnimationFrame(animation);
             }
         });
     });
