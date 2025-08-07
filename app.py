@@ -6,10 +6,22 @@ import hmac
 import hashlib
 import subprocess
 import logging
+from logging.handlers import RotatingFileHandler
 
 # 1. --- APP INITIALIZATION & CONFIGURATION ---
 app = Flask(__name__)
+log_file = '/home/ubuntu/launchpad/app.log'  # The log file will be in your project directory
+log_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
+log_handler = RotatingFileHandler(log_file, maxBytes=10240, backupCount=10)
+log_handler.setFormatter(log_formatter)
+log_handler.setLevel(logging.INFO) # Set the level to INFO to capture everything
 
+# Add the handler to your Flask app's logger
+app.logger.addHandler(log_handler)
+app.logger.setLevel(logging.INFO) # Also set the app's logger level
+
+# Log a message right at startup to confirm the logger is working
+app.logger.info('--- Flask App Starting Up ---')
 # --- Configuration Section ---
 # Use environment variables for secrets in production!
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET', 'a_very_secret_key_for_development')
