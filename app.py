@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, abort
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, abort, send_from_directory
 from flask_mail import Mail, Message
 from threading import Thread
 import os
@@ -55,7 +55,11 @@ def send_async_email(app, msg):
 
 
 # 4. --- ROUTE DEFINITIONS ---
-@app.route('/git-webhook', methods=['POST'])
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 @app.route('/git-webhook', methods=['POST'])
 def git_webhook():
     secret = os.environ.get("GITHUB_WEBHOOK_SECRET", "")
