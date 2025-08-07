@@ -11,9 +11,9 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET', 'a_very_secret_key_for_development')
 
 # ==> Database configuration points to 'localhost'
-DB_USER = 'myappuser'
-DB_PASS = 'strongpassword' # <-- Use the password you created for your DB user
-DB_NAME = 'myapp'
+DB_USER = os.environ.get('DB_USER')
+DB_PASS = os.environ.get('DB_PASS')
+DB_NAME = os.environ.get('DB_NAME')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASS}@localhost/{DB_NAME}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -77,21 +77,36 @@ def signup():
         if User.query.filter_by(email=email).first():
             flash('An account with this email already exists.', 'error')
             return redirect(url_for('signup'))
-        
-        # Hash the password for secure storage
-        hashed_password = generate_password_hash(password, method='sha256')
-        
-        new_user = User(name=name, email=email, password_hash=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
 
-        # Log the new user in automatically
-        session['user_id'] = new_user.id
-        session['name'] = new_user.name
-        return redirect(url_for('dashboard'))
+        # --- THIS IS THE NEW DEBUGGING BLOCK ---
+        try:
+            # Hash the password for secure storage
+            hashed_password = generate_password_hash(password, method='sha256')
+
+            new_user = User(name=name, email=email, password_hash=hashed_password)
+            db.session.add(new_user)
+            db.session.commit() # This is the line that is likely failing
+
+            # Log the new user in automatically
+            session['user_id'] = new_user.id
+            session['name'] = new_user.name
+            
+            print(f"SUCCESS: User {email} created successfully.") # A success message for our log
+
+            return redirect(url_for('dashboard'))
+
+        except Exception as e:
+            # If any error happens during the above 'try' block, it will be caught here
+            db.session.rollback() # Roll back the transaction to keep the DB clean
+            
+            # This is the most important line for debugging.
+            # It prints the exact database error to the console/log.
+            print(f"DATABASE ERROR ON SIGNUP: {e}")
+            
+            flash('A database error occurred. Please try again later.', 'error')
+            return redirect(url_for('signup'))
 
     return render_template('signup.html')
-
 
 @app.route('/dashboard')
 def dashboard():
