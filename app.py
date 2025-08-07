@@ -5,33 +5,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import hmac
 import hashlib
 import subprocess
-import logging
-from logging.handlers import RotatingFileHandler
 
 # 1. --- APP INITIALIZATION & CONFIGURATION ---
 app = Flask(__name__)
-log_file = '/home/ubuntu/launchpad/app.log'  # The log file will be in your project directory
-log_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
-log_handler = RotatingFileHandler(log_file, maxBytes=10240, backupCount=10)
-log_handler.setFormatter(log_formatter)
-log_handler.setLevel(logging.INFO) # Set the level to INFO to capture everything
 
-# Add the handler to your Flask app's logger
-app.logger.addHandler(log_handler)
-app.logger.setLevel(logging.INFO) # Also set the app's logger level
-
-# Log a message right at startup to confirm the logger is working
-app.logger.info('--- Flask App Starting Up ---')
-# --- Configuration Section ---
-# Use environment variables for secrets in production!
-app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET', 'a_very_secret_key_for_development')
-
-# ==> Database configuration points to 'localhost'
-DB_USER = os.environ.get('DB_USER')
-DB_PASS = os.environ.get('DB_PASS')
-DB_NAME = os.environ.get('DB_NAME')
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASS}@localhost/{DB_NAME}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # 2. --- INITIALIZE EXTENSIONS ---
 db = SQLAlchemy(app)
@@ -118,7 +95,7 @@ def signup():
         # --- THIS IS THE NEW DEBUGGING BLOCK ---
         try:
             # Hash the password for secure storage
-            hashed_password = generate_password_hash(password, method='sha256')
+            hashed_password = generate_password_hash(password, method='scrypt')
 
             new_user = User(name=name, email=email, password_hash=hashed_password)
             db.session.add(new_user)
