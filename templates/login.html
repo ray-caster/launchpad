@@ -124,4 +124,59 @@
                 <!-- Google Sign-In Button -->
                 <div>
                     <a href="#" class="w-full flex items-center justify-center py-3 px-4 text-sm font-medium rounded-lg border border-gray-600 bg-gray-700 hover:bg-gray-600 text-white transition-colors">
-                        <img class="w-5 h-5 mr-2" src="https://www.svgrepo.com/show/475656/g
+                        <img class="w-5 h-5 mr-2" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google logo">
+                        Sign in with Google
+                    </a>
+                </div>
+            </div>
+
+            <!-- Sign up link -->
+            <p class="text-center text-sm text-gray-400 animate-fade-in-up delay-200">
+                Don't have an account?
+                <a href="{{ url_for('signup') }}" class="font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                    Sign up
+                </a>
+            </p>
+        </div>
+    </main>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+            const starsContainer = document.getElementById('stars-container');
+            if (starsContainer) {
+                const fragment = document.createDocumentFragment();
+                for (let i = 0; i < 100; i++) {
+                    const star = document.createElement('div');
+                    star.classList.add('star');
+                    const size = Math.random() * 2 + 1;
+                    star.style.cssText = `width:${size}px; height:${size}px; left:${Math.random()*100}%; top:${Math.random()*100}%; opacity:${Math.random()}; animation:twinkle ${5+Math.random()*10}s infinite ${Math.random()*5}s ease-in-out;`;
+                    fragment.appendChild(star);
+                }
+                starsContainer.appendChild(fragment);
+                const style = document.createElement('style');
+                style.textContent = `@keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }`;
+                document.head.appendChild(style);
+            }
+
+            const togglePassword = document.getElementById('toggle-password');
+            const passwordInput = document.getElementById('password');
+            if (togglePassword && passwordInput) {
+                togglePassword.addEventListener('click', function() {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    this.querySelector('i').classList.toggle('fa-eye');
+                    this.querySelector('i').classList.toggle('fa-eye-slash');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
