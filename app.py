@@ -1,7 +1,10 @@
 import os
-from flask import Flask, render_template, request, session, redirect, url_for, flash
+from flask import Flask, render_template, request, session, redirect, url_for, flash, abort
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
+import hmac
+import hashlib
+import subprocess
 
 # 1. --- APP INITIALIZATION & CONFIGURATION ---
 app = Flask(__name__)
@@ -39,6 +42,24 @@ def init_db():
     """Clear the existing data and create new tables."""
     db.create_all()
     print("Initialized the database.")
+
+@app.route('/git-webhook', methods=['POST'])
+def git_webhook():
+    secret = os.environ.get("GITHUB_WEBHOOK_SECRET", "")
+    signature = request.headers.get('X-Hub-Signature-256')
+    if not signature:
+        abort(403)
+    try:
+        sha_name, github_signature = signature.split('=')
+    except ValueError:
+        abort(403)
+    if sha_name != 'sha256':
+        abort(501)
+    mac = hmac.new(secret.encode(), msg=request.data, digestmod=hashlib.sha256)
+    if not hmac.compare_digest(mac.hexdigest(), github_signature):
+        abort(403)
+    subprocess.Popen(['/home/ubuntu/launchpad/git-auto-pull.sh'])
+    return 'Webhook verified.', 200
 
 @app.route('/')
 def index():
