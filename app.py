@@ -68,6 +68,7 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    print(f"DEBUG: Reached signup view with method: {request.method}")
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
 
