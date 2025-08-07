@@ -91,6 +91,8 @@ def index():
         try:
             name = request.form.get('name')
             email = request.form.get('email')
+            if not name or not email:
+                return jsonify({"success": False, "message": "Missing required fields."}), 400
             phone = request.form.get('phone', 'Not provided')
             program = request.form.get('program', 'Not specified')
             message_body = request.form.get('message', 'No message was left.')
