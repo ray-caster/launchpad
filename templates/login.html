@@ -24,7 +24,47 @@
     </style>
 </head>
 <body class="relative overflow-x-hidden">
+    <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+    <!-- Star Background -->
     <div id="stars-container" class="fixed inset-0 overflow-hidden -z-10"></div>
+    
+    <!-- Navigation -->
+    <nav class="py-6 px-4 md:px-12 backdrop-blur-md bg-opacity-80 bg-gray-900 fixed w-full z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Launchpad Logo" class="h-8">
+                <span class="font-['Red_Hat_Display'] text-2xl font-bold text-[#f8f8f8] drop-shadow-[0_0_8px_rgba(248,248,248,0.8)]">Launchpad.org</span>
+            </div>
+            <div class="hidden lg:flex items-center space-x-8">
+                <a href="#about" class="text-gray-300 hover:text-white transition">About</a>
+                <a href="#programs" class="text-gray-300 hover:text-white transition">Programs</a>
+                <a href="#mission" class="text-gray-300 hover:text-white transition">Mission</a>
+                <a href="#team" class="text-gray-300 hover:text-white transition">Team</a>
+                <a href="#footer-contact" class="text-gray-300 hover:text-white transition">Contact</a>
+            </div>
+            <div class="hidden lg:block">
+                <a href="/" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20">
+                    Home
+                </a>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden text-gray-300">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-gray-900 backdrop-blur-md bg-opacity-95 border-t border-gray-800 py-4 px-6 lg:hidden">
+                <div class="flex flex-col space-y-4">
+                    <a href="#about" class="text-gray-300 hover:text-white transition">About</a>
+                    <a href="#programs" class="text-gray-300 hover:text-white transition">Programs</a>
+                    <a href="#mission" class="text-gray-300 hover:text-white transition">Mission</a>
+                    <a href="#team" class="text-gray-300 hover:text-white transition">Team</a>
+                    <a href="#signup" class="text-gray-300 hover:text-white transition">Newsletter</a>
+                    <a href="#footer-contact" class="text-gray-300 hover:text-white transition">Contact</a>
+                    <a href="/" class="mt-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20 text-center">
+                        Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
     <main class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
         <div class="w-full max-w-md space-y-8">
             <div class="text-center animate-fade-in-up">
@@ -83,6 +123,15 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
             // Star background animation (no changes needed here)
             const starsContainer = document.getElementById('stars-container');
             if (starsContainer) {
