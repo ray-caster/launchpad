@@ -34,9 +34,11 @@ class User(db.Model):
 # 4. --- ROUTE DEFINITIONS ---
 
 # This command will run once before the first request to create the database table
-@app.before_first_request
-def create_tables():
+@app.cli.command("init-db")
+def init_db():
+    """Clear the existing data and create new tables."""
     db.create_all()
+    print("Initialized the database.")
 
 @app.route('/')
 def index():
