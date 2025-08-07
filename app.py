@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import hmac
 import hashlib
 import subprocess
+import logging
 
 # 1. --- APP INITIALIZATION & CONFIGURATION ---
 app = Flask(__name__)
@@ -41,7 +42,7 @@ class User(db.Model):
 def init_db():
     """Clear the existing data and create new tables."""
     db.create_all()
-    print("Initialized the database.")
+    app.logger.info("Initialized the database.")
 
 @app.route('/git-webhook', methods=['POST'])
 def git_webhook():
@@ -89,7 +90,7 @@ def login():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    print(f"DEBUG: Reached signup view with method: {request.method}")
+    app.logger.info(f"DEBUG: Reached signup view with method: {request.method}")
     if 'user_id' in session:
         return redirect(url_for('dashboard'))
 
@@ -115,7 +116,7 @@ def signup():
             session['user_id'] = new_user.id
             session['name'] = new_user.name
             
-            print(f"SUCCESS: User {email} created successfully.") # A success message for our log
+            app.logger.info(f"SUCCESS: User {email} created successfully.") # A success message for our log
 
             return redirect(url_for('dashboard'))
 
@@ -125,7 +126,7 @@ def signup():
             
             # This is the most important line for debugging.
             # It prints the exact database error to the console/log.
-            print(f"DATABASE ERROR ON SIGNUP: {e}")
+            app.logger.info(f"DATABASE ERROR ON SIGNUP: {e}")
             
             flash('A database error occurred. Please try again later.', 'error')
             return redirect(url_for('signup'))
