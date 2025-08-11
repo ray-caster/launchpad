@@ -17,73 +17,116 @@
         .gradient-text { background: linear-gradient(90deg, #8b5cf6, #3b82f6, #10b981); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; will-change: opacity; }
         .input-focus:focus { box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3); }
-        .section-divider { background: linear-gradient(90deg, rgba(59,130,246,0) 0%, rgba(59,130,246,0.5) 50%, rgba(59,130,246,0) 100%); height: 1px; width: 100%; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
         .delay-100 { animation-delay: 0.1s; } .delay-200 { animation-delay: 0.2s; } .delay-300 { animation-delay: 0.3s; }
     </style>
 </head>
 <body class="relative overflow-x-hidden">
+    <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
+    <!-- Star Background -->
     <div id="stars-container" class="fixed inset-0 overflow-hidden -z-10"></div>
-    <main class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+    
+    <!-- Navigation -->
+    <nav class="py-6 px-4 md:px-12 backdrop-blur-md bg-opacity-80 bg-gray-900 fixed w-full z-50 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <a href="{{ url_for('index') }}" class="flex items-center space-x-2">
+                <!-- Assuming you have a logo image in your static folder -->
+                <!-- <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Launchpad Logo" class="h-8"> -->
+                <span class="font-['Red_Hat_Display'] text-2xl font-bold text-[#f8f8f8] drop-shadow-[0_0_8px_rgba(248,248,248,0.8)]">Launchpad.org</span>
+            </a>
+            <div class="hidden lg:flex items-center space-x-8">
+                <a href="/#about" class="text-gray-300 hover:text-white transition">About</a>
+                <a href="/#programs" class="text-gray-300 hover:text-white transition">Programs</a>
+                <a href="/#mission" class="text-gray-300 hover:text-white transition">Mission</a>
+            </div>
+            <div class="hidden lg:block">
+                <a href="{{ url_for('signup') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20">
+                    Sign Up
+                </a>
+            </div>
+            <button id="mobile-menu-button" class="lg:hidden text-gray-300">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-gray-900 backdrop-blur-md bg-opacity-95 border-t border-gray-800 py-4 px-6 lg:hidden">
+                <div class="flex flex-col space-y-4">
+                    <a href="/#about" class="text-gray-300 hover:text-white transition">About</a>
+                    <a href="/#programs" class="text-gray-300 hover:text-white transition">Programs</a>
+                    <a href="/#mission" class="text-gray-300 hover:text-white transition">Mission</a>
+                    <a href="{{ url_for('signup') }}" class="mt-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20 text-center">
+                        Sign Up
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main id="main-content" class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 pt-32">
         <div class="w-full max-w-md space-y-8">
             <div class="text-center animate-fade-in-up">
-                <div class="flex justify-center items-center space-x-2">
-                    <!-- Assuming you have a logo in a static/images folder -->
-                    <img src="{{url_for('static', filename='images/logo.webp', _external=True)}}" alt="Launchpad Logo" class="h-10">
-                    <span class="font-['Red_Hat_Display'] text-3xl font-bold text-[#f8f8f8] drop-shadow-[0_0_8px_rgba(248,248,248,0.8)]">Launchpad.org</span>
-                </div>
-                <h2 class="mt-6 orbitron text-3xl font-bold text-white"><span class="gradient-text">Welcome Back</span></h2>
-                <p class="mt-2 text-sm text-gray-400">Sign in to access your STEM learning dashboard</p>
-                <div class="section-divider mx-auto my-6 max-w-xs"></div>
+                 <h2 class="mt-6 orbitron text-3xl font-bold text-white"><span class="gradient-text">Welcome Back</span></h2>
+                 <p class="mt-2 text-sm text-gray-400">Sign in to access your STEM learning dashboard</p>
             </div>
 
-            <!-- *** MODIFIED FORM TAG *** 
-                 Action points to the /login route in Flask.
-                 Method is POST to send data securely. -->
-            <form id="login-form" class="mt-8 space-y-6 bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 shadow-lg animate-fade-in-up delay-100"
-                  action="{{ url_for('login') }}" method="POST">
-                
-                <!-- *** NEW: Display server-side errors here *** -->
-                {% if error %}
-                <div id="login-error" class="bg-red-900/50 text-red-300 px-4 py-3 rounded-md text-sm">
-                    {{ error }}
-                </div>
-                {% endif %}
-                
-                <div class="space-y-4">
-                    <div class="animate-fade-in-up delay-200">
-                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email address</label>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-envelope text-gray-500"></i></div>
-                            <input id="email" name="email" type="email" autocomplete="email" required class="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400 input-focus" placeholder="you@example.com">
+            <div class="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 shadow-lg animate-fade-in-up delay-100">
+                <form id="login-form" class="space-y-6" action="{{ url_for('login') }}" method="POST">
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="bg-red-900/50 text-red-300 px-4 py-3 rounded-md text-sm">
+                              {{ message }}
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                    
+                    <div class="space-y-4">
+                        <div class="animate-fade-in-up delay-200">
+                            <label for="email" class="sr-only">Email address</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-envelope text-gray-500"></i></div>
+                                <input id="email" name="email" type="email" autocomplete="email" required class="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400 input-focus" placeholder="Email address">
+                            </div>
+                        </div>
+                        <div class="animate-fade-in-up delay-300">
+                            <label for="password" class="sr-only">Password</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-lock text-gray-500"></i></div>
+                                <input id="password" name="password" type="password" autocomplete="current-password" required class="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400 input-focus" placeholder="Password">
+                                <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300"><i class="fas fa-eye-slash"></i></button>
+                            </div>
                         </div>
                     </div>
                     <div class="animate-fade-in-up delay-300">
-                        <div class="flex items-center justify-between">
-                            <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
-                            <div class="text-sm"><a href="#" class="font-medium text-purple-400 hover:text-purple-300 transition-colors">Forgot password?</a></div>
-                        </div>
-                        <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-lock text-gray-500"></i></div>
-                            <input id="password" name="password" type="password" autocomplete="current-password" required class="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400 input-focus" placeholder="••••••••">
-                            <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300"><i class="fas fa-eye-slash"></i></button>
-                        </div>
+                        <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors shadow-lg shadow-purple-500/20">
+                            Sign in
+                        </button>
                     </div>
-                </div>
-                <div class="animate-fade-in-up delay-300">
-                    <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors shadow-lg shadow-purple-500/20">
-                        <span class="absolute left-0 inset-y-0 flex items-center pl-3"><i class="fas fa-sign-in-alt text-purple-300 group-hover:text-purple-200 transition-colors"></i></span>
-                        Sign in
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
+
+            <p class="text-center text-sm text-gray-400 animate-fade-in-up delay-200">
+                Don't have an account?
+                <a href="{{ url_for('signup') }}" class="font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                    Sign up
+                </a>
+            </p>
         </div>
     </main>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Star background animation (no changes needed here)
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Star background animation
             const starsContainer = document.getElementById('stars-container');
             if (starsContainer) {
                 const fragment = document.createDocumentFragment();
@@ -100,7 +143,7 @@
                 document.head.appendChild(style);
             }
 
-            // Toggle password visibility (no changes needed here)
+            // Toggle password visibility
             const togglePassword = document.getElementById('toggle-password');
             const passwordInput = document.getElementById('password');
             if (togglePassword && passwordInput) {
@@ -111,7 +154,6 @@
                     this.querySelector('i').classList.toggle('fa-eye-slash');
                 });
             }
-
         });
     </script>
 </body>

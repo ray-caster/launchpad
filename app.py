@@ -1,199 +1,164 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for, abort, send_from_directory
-from flask_mail import Mail, Message
-from threading import Thread
 import os
-import traceback
+from flask import Flask, render_template, request, session, redirect, url_for, flash, abort
+from flask_sqlalchemy import SQLAlchemy
+from werkzeug.security import generate_password_hash, check_password_hash
 import hmac
 import hashlib
 import subprocess
+import logging
+from logging.handlers import RotatingFileHandler
 
 # 1. --- APP INITIALIZATION & CONFIGURATION ---
 app = Flask(__name__)
+log_file = '/home/ubuntu/launchpad/app.log'  # The log file will be in your project directory
+log_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
+log_handler = RotatingFileHandler(log_file, maxBytes=10240, backupCount=10)
+log_handler.setFormatter(log_formatter)
+log_handler.setLevel(logging.INFO) # Set the level to INFO to capture everything
 
-# CRITICAL: A secret key is required by Flask to manage sessions securely.
-# CHANGE THIS to a long, random, and secret string.
-app.config['SECRET_KEY'] = 'your-super-secret-key-change-me'
+# Add the handler to your Flask app's logger
+app.logger.addHandler(log_handler)
+app.logger.setLevel(logging.INFO) # Also set the app's logger level
 
-# Reads secure variables for email from environment variables (e.g., in cPanel).
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-app.config['MAIL_DEFAULT_SENDER'] = ("Launchpad.org Notifications", os.environ.get('MAIL_USERNAME'))
+# Log a message right at startup to confirm the logger is working
+app.logger.info('--- Flask App Starting Up ---')
+# --- Configuration Section ---
+# Use environment variables for secrets in production!
+app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET', 'a_very_secret_key_for_development')
 
-GITHUB_SECRET = os.environ.get("GITHUB_WEBHOOK_SECRET", "default")
-# This check warns you if email credentials aren't set, but allows the app to run.
-if not app.config['MAIL_USERNAME'] or not app.config['MAIL_PASSWORD']:
-    print("WARNING: MAIL_USERNAME or MAIL_PASSWORD environment variables are not set. Email sending will be disabled.")
+# ==> Database configuration points to 'localhost'
+DB_USER = os.environ.get('DB_USER')
+DB_PASS = os.environ.get('DB_PASS')
+DB_NAME = os.environ.get('DB_NAME')
+app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{DB_USER}:{DB_PASS}@localhost/{DB_NAME}'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-mail = Mail(app)
+# 2. --- INITIALIZE EXTENSIONS ---
+db = SQLAlchemy(app)
 
+# 3. --- DATABASE MODEL ---
+# Note: The 'google_id' column has been removed.
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password_hash = db.Column(db.String(200), nullable=False) # Not nullable anymore
 
-# 2. --- FAKE USER DATABASE ---
-# In a real application, you would connect to a database (e.g., SQLite, PostgreSQL).
-# Passwords should ALWAYS be hashed, never stored in plain text.
-FAKE_USERS = {
-    "user@example.com": {
-        "password": "password123",
-        "name": "Demoman is gay"
-    }
-}
-
-
-# 3. --- ASYNCHRONOUS EMAIL FUNCTION ---
-def send_async_email(app, msg):
-    """Sends an email in a background thread to avoid blocking the app."""
-    with app.app_context():
-        try:
-            mail.send(msg)
-            print("--- Email sent successfully in background! ---", flush=True)
-        except Exception as e:
-            # Logs the full error to your server logs if sending fails.
-            print(f"!!! FAILED TO SEND EMAIL: {e} !!!", flush=True)
-            print(traceback.format_exc(), flush=True)
-
+    def __repr__(self):
+        return f'<User {self.email}>'
 
 # 4. --- ROUTE DEFINITIONS ---
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+# This command will run once before the first request to create the database table
+@app.cli.command("init-db")
+def init_db():
+    """Clear the existing data and create new tables."""
+    db.create_all()
+    app.logger.info("Initialized the database.")
 
 @app.route('/git-webhook', methods=['POST'])
 def git_webhook():
     secret = os.environ.get("GITHUB_WEBHOOK_SECRET", "")
     signature = request.headers.get('X-Hub-Signature-256')
-
-    print(">> SECRET from env:", secret, flush=True)
-    print(">> Signature header:", signature, flush=True)
-
     if not signature:
-        print("❌ No signature header received", flush=True)
         abort(403)
-
     try:
         sha_name, github_signature = signature.split('=')
-    except Exception as e:
-        print("❌ Failed to parse signature header", flush=True)
+    except ValueError:
         abort(403)
-
     if sha_name != 'sha256':
-        print("❌ Unsupported hash type:", sha_name, flush=True)
         abort(501)
-
     mac = hmac.new(secret.encode(), msg=request.data, digestmod=hashlib.sha256)
-    your_signature = mac.hexdigest()
-
-    print(">> Computed signature:", your_signature, flush=True)
-    print(">> GitHub signature:  ", github_signature, flush=True)
-
-    if not hmac.compare_digest(your_signature, github_signature):
-        print("❌ Signature mismatch", flush=True)
+    if not hmac.compare_digest(mac.hexdigest(), github_signature):
         abort(403)
-
-    print("✅ Webhook verified. Running pull script.", flush=True)
     subprocess.Popen(['/home/ubuntu/launchpad/git-auto-pull.sh'])
     return 'Webhook verified.', 200
 
-# The original route for the contact/signup form.
-@app.route('/', methods=["GET", "POST"])
+@app.route('/')
 def index():
-    # If the request is a POST, it's from the contact/signup form.
-    if request.method == "POST":
-        try:
-            name = request.form.get('name')
-            email = request.form.get('email')
-            phone = request.form.get('phone', 'Not provided')
-            program = request.form.get('program', 'Not specified')
-            message_body = request.form.get('message', 'No message was left.')
-
-            email_html_body = f"""
-            <html><body>
-                <h2>🚀 New Signup via Launchpad.org!</h2><hr>
-                <p><strong>Name:</strong> {name}</p>
-                <p><strong>Email (for Reply-To):</strong> {email}</p>
-                <p><strong>Phone:</strong> {phone}</p>
-                <p><strong>Program Interest:</strong> {program.replace('-', ' ').title()}</p>
-                <p><strong>Message:</strong></p><p><em>{message_body}</em></p>
-            </body></html>
-            """
-            
-            msg = Message(
-                subject=f"New Launchpad Signup: {name}",
-                recipients=[os.environ.get('MAIL_USERNAME')], # Sends email to you
-                html=email_html_body,
-                reply_to=email
-            )
-            # Starts the email sending in a separate thread.
-            Thread(target=send_async_email, args=(app, msg)).start()
-            return jsonify({"success": True, "message": "Thank you for signing up!"}), 200
-        except Exception as e:
-            print(f"!!! ERROR IN MAIN ROUTE: {e} !!!", flush=True)
-            return jsonify({"success": False, "message": "An internal server error occurred."}), 500
-
-    # If the request is a GET, just redirect to the login page.
     return render_template('home.html')
 
-
-# The route for handling user login.
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # If user is already logged in, send them straight to the dashboard.
-    if 'email' in session:
+    if 'user_id' in session:
         return redirect(url_for('dashboard'))
 
-    # If the form is being submitted.
     if request.method == 'POST':
-        print("--- Login POST request received ---", flush=True) 
-        
         email = request.form.get('email')
         password = request.form.get('password')
         
-        print(f"Attempting login for email: {email}", flush=True)
-
-        user = FAKE_USERS.get(email)
-        # IMPORTANT: Check if user exists AND if the password matches.
-        if user and user['password'] == password:
-            # Store user info in the session to "log them in".
-            session['email'] = email
-            session['name'] = user['name']
-            
-            print("Login SUCCESS. Redirecting to dashboard.", flush=True)
+        user = User.query.filter_by(email=email).first()
+        
+        # Check if the user exists and the password hash matches the password provided
+        if user and check_password_hash(user.password_hash, password):
+            session['user_id'] = user.id
+            session['name'] = user.name
             return redirect(url_for('dashboard'))
         else:
-            # If details are incorrect, show an error on the login page.
-            error = 'Invalid email or password. Please try again.'
-            print("Login FAILED. Rendering login page with error.", flush=True)
-            return render_template('login.html', error=error)
+            flash('Invalid email or password. Please try again.', 'error')
+            return redirect(url_for('login'))
             
-    # If it's a GET request, just show the login page.
     return render_template('login.html')
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    app.logger.info(f"DEBUG: Reached signup view with method: {request.method}")
+    if 'user_id' in session:
+        return redirect(url_for('dashboard'))
 
-# The protected dashboard route.
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if User.query.filter_by(email=email).first():
+            flash('An account with this email already exists.', 'error')
+            return redirect(url_for('signup'))
+
+        # --- THIS IS THE NEW DEBUGGING BLOCK ---
+        try:
+            # Hash the password for secure storage
+            hashed_password = generate_password_hash(password, method='scrypt')
+
+            new_user = User(name=name, email=email, password_hash=hashed_password)
+            db.session.add(new_user)
+            db.session.commit() # This is the line that is likely failing
+
+            # Log the new user in automatically
+            session['user_id'] = new_user.id
+            session['name'] = new_user.name
+            
+            app.logger.info(f"SUCCESS: User {email} created successfully.") # A success message for our log
+
+            return redirect(url_for('dashboard'))
+
+        except Exception as e:
+            # If any error happens during the above 'try' block, it will be caught here
+            db.session.rollback() # Roll back the transaction to keep the DB clean
+            
+            # This is the most important line for debugging.
+            # It prints the exact database error to the console/log.
+            app.logger.info(f"DATABASE ERROR ON SIGNUP: {e}")
+            
+            flash('A database error occurred. Please try again later.', 'error')
+            return redirect(url_for('signup'))
+
+    return render_template('signup.html')
+
 @app.route('/dashboard')
 def dashboard():
-    # This is the security check: is the user logged in?
-    if 'email' in session:
-        user_name = session.get('name', 'User') # Get name from session
-        return render_template('dashboard.html', name=user_name)
-    
-    # If not logged in, force them back to the login page.
-    return redirect(url_for('login'))
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    # You can retrieve the user from the database if you need more info
+    # user = User.query.get(session['user_id'])
+    return render_template('dashboard.html', name=session.get('name'))
 
-
-# The route to log the user out.
 @app.route('/logout')
 def logout():
-    # Clear the session dictionary to remove user data.
     session.clear()
-    # Redirect back to the login page.
     return redirect(url_for('login'))
 
-
-# 5. --- RUN THE APPLICATION ---
 if __name__ == '__main__':
-    # debug=True enables auto-reloading and provides detailed error pages.
-    # Do NOT use debug=True in a production environment.
-    app.run(debug=True)
+    # When running on your server, it's better to use a WSGI server like Gunicorn
+    # For now, this is fine for testing.
+    app.run(host='0.0.0.0', port=5000, debug=True)
