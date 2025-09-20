@@ -230,7 +230,7 @@
     <nav class="main-nav">
         <div class="nav-container">
             <a href="/" class="nav-logo">
-                <img src="{{ url_for('static', filename='images/logo.webp" alt="Launchpad Logo" class="logo-img"
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Launchpad Logo" class="logo-img"
                     width="32" height="32">
                 <span class="logo-text">Launchpad.org</span>
             </a>
@@ -263,14 +263,15 @@
         <section class="hero-section">
             <div class="hero-background">
                 <div id="hero-carousel">
+                    <!-- JINJA SYNTAX FIX APPLIED HERE -->
                     <div class="hero-slide"
-                        style="background-image: url('{{ url_for('static', filename='images/background1.webp') }}')"
+                        style="background-image: url({{ url_for('static', filename='images/background1.webp') }})"
                         data-active="true"></div>
                     <div class="hero-slide"
-                        style="background-image: url('{{ url_for('static', filename='images/background2.webp') }}')">
+                        style="background-image: url({{ url_for('static', filename='images/background2.webp') }})">
                     </div>
                     <div class="hero-slide"
-                        style="background-image: url('{{ url_for('static', filename='images/background3.webp') }}')">
+                        style="background-image: url({{ url_for('static', filename='images/background3.webp') }})">
                     </div>
                 </div>
                 <div class="hero-overlay"></div>
@@ -319,17 +320,18 @@
                                 <div class="collaborators-title">Collaborating with:</div>
                                 <div class="collaborator-logos">
                                     <a href="https://www.bchati.sch.id" target="_blank" rel="noopener noreferrer"><img
-                                            loading="lazy" src="{{ url_for('static', filename='images/CH_LOGO.webp"
+                                            loading="lazy" src="{{ url_for('static', filename='images/CH_LOGO.webp') }}"
                                             alt="Cita Hati"></a>
                                     <a href="https://trackeco.org" target="_blank" rel="noopener noreferrer"><img
-                                            loading="lazy" src="{{ url_for('static', filename='images/TrackEco.webp"
+                                            loading="lazy"
+                                            src="{{ url_for('static', filename='images/TrackEco.webp') }}"
                                             alt="Track Eco"></a>
                                     <a href="https://www.instagram.com/gcpi.id" target="_blank"
                                         rel="noopener noreferrer"><img loading="lazy"
-                                            src="{{ url_for('static', filename='images/GCPI.webp" alt="GCPI"></a>
+                                            src="{{ url_for('static', filename='images/GCPI.webp') }}" alt="GCPI"></a>
                                     <a href="https://www.instagram.com/griya.perkasa" target="_blank"
                                         rel="noopener noreferrer"><img loading="lazy"
-                                            src="{{ url_for('static', filename='images/griyaperkasa.webp"
+                                            src="{{ url_for('static', filename='images/griyaperkasa.webp') }}"
                                             alt="Griya Perkasa"></a>
                                 </div>
                             </div>
@@ -367,7 +369,7 @@
                         </div>
                     </div>
                     <div class="about-image">
-                        <img loading="lazy" src="{{ url_for('static', filename='images/working.webp"
+                        <img loading="lazy" src="{{ url_for('static', filename='images/working.webp') }}"
                             alt="Students working on robotics" width="800" height="600">
                     </div>
                 </div>
@@ -423,6 +425,7 @@
                         </ul>
                     </div>
                 </div>
+            </div>
         </section>
 
         <!-- Mission Section -->
@@ -468,7 +471,7 @@
                 <div class="founder-card-container">
                     <div class="team-card founder-card card-hover">
                         <div class="team-photo-wrapper founder-photo">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/max.webp"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/max.webp') }}"
                                 alt="Maximillian Eugene">
                         </div>
                         <h3>Maximillian Eugene</h3>
@@ -490,7 +493,7 @@
                     <!-- Stanley -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-blue">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/stanley.webp"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/stanley.webp') }}"
                                 alt="Stanley Sentosa">
                         </div>
                         <h3>Stanley Sentosa</h3>
@@ -510,7 +513,7 @@
                     <!-- Dylan -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-green">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/dylan.webp"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/dylan.webp') }}"
                                 alt="Dylan Bradley">
                         </div>
                         <h3>Dylan Bradley</h3>
@@ -529,7 +532,7 @@
                     <!-- Olivia -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-purple">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/olivia.webp"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/olivia.webp') }}"
                                 alt="Olivia Catherine">
                         </div>
                         <h3>Olivia Catherine</h3>
@@ -548,7 +551,7 @@
                     <!-- Janice -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-blue">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/janice.webp"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/janice.webp') }}"
                                 alt="Janice Ohara">
                         </div>
                         <h3>Janice Ohara</h3>
@@ -564,7 +567,7 @@
                     <!-- Glint -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-green">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/glint.webp"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/glint.webp') }}"
                                 alt="Glint Heraldo">
                         </div>
                         <h3>Glint Heraldo</h3>
@@ -580,7 +583,7 @@
                     <!-- Joseph -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-purple">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/joseph.webp"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/joseph.webp') }}"
                                 alt="Joseph Dylan">
                         </div>
                         <h3>Joseph Dylan</h3>
@@ -688,7 +691,7 @@
             <div class="footer-grid">
                 <div class="footer-column">
                     <div class="nav-logo">
-                        <img src="{{ url_for('static', filename='images/logo.webp" alt="Launchpad Logo"
+                        <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Launchpad Logo"
                             class="logo-img">
                         <span class="logo-text">Launchpad.org</span>
                     </div>
