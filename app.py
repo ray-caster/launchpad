@@ -10,7 +10,7 @@ from logging.handlers import RotatingFileHandler
 
 # 1. --- APP INITIALIZATION & CONFIGURATION ---
 app = Flask(__name__)
-log_file = '/home/ubuntu/launchpad/app.log'  # The log file will be in your project directory
+log_file = '/home/trackeco/launchpad/app.log'  # The log file will be in your project directory
 log_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
 log_handler = RotatingFileHandler(log_file, maxBytes=10240, backupCount=10)
 log_handler.setFormatter(log_formatter)
