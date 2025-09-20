@@ -1,6 +1,6 @@
 /*
 =================================================================
-    LAUNCHPAD.ORG - DEFINITIVE COMBINED STYLESHEET
+    LAUNCHPAD.ORG - DEFINITIVE VIBRANT & ACCESSIBLE STYLESHEET
 =================================================================
 */
 
@@ -198,22 +198,27 @@ a {
 */
 
 :root {
-    /* Colors */
-    --purple-main: #9333ea;
-    --purple-dark: #7e22ce;
-    --purple-light: #a855f7;
-    --blue-main: #3b82f6;
-    --green-main: #10b981;
+    /* Original Tailwind-based colors */
+    --purple-main: #8b5cf6;
+    /* Original purple-500 */
+    --purple-dark: #7c3aed;
+    /* Original purple-600 */
+    --blue-main: #60a5fa;
+    /* Original blue-400 */
+    --green-main: #34d399;
+    /* Original green-400 */
+
+    /* General UI Colors */
     --dark-card: #1e293b;
     --dark-border: #334155;
     --text-medium: #cbd5e1;
     --text-dark: #94a3b8;
 
-    /* VIBRANCY FIX: New, brighter, and fully accessible colors */
-    --purple-vibrant-accessible: #d8b4fe;
-    /* A bright, vibrant lavender */
+    /* FINAL VIBRANCY FIX: Brightened, accessible versions of the original colors */
+    --purple-vibrant-accessible: #c4b5fd;
+    /* Brighter, accessible version of purple-400 */
     --blue-vibrant-accessible: #93c5fd;
-    /* A bright, vibrant sky blue */
+    /* Brighter, accessible version of blue-400 */
 
     /* Spacing */
     --container-padding: 1.5rem;
@@ -275,30 +280,30 @@ ul {
     display: inline-block;
     padding: 0.75rem 1.5rem;
     border-radius: 9999px;
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
     transition: all 0.3s ease;
 }
 
 .btn-primary {
-    background-color: var(--purple-main);
+    background-color: var(--purple-dark);
     color: white;
-    box-shadow: 0 4px 14px 0 rgba(147, 51, 234, 0.39);
+    box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.3);
 }
 
 .btn-primary:hover {
-    background-color: var(--purple-dark);
+    background-color: #6d28d9;
     color: white;
 }
 
 .btn-secondary {
     border: 1px solid var(--purple-main);
-    color: var(--purple-light);
+    color: var(--purple-main);
 }
 
 .btn-secondary:hover {
-    background-color: rgba(147, 51, 234, 0.2);
-    color: var(--text-light);
+    background-color: rgba(139, 92, 246, 0.1);
+    color: #a78bfa;
 }
 
 /* 
@@ -378,8 +383,8 @@ ul {
 }
 
 .hero-dots button {
-    width: 1rem;
-    height: 1rem;
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 50%;
     border: 2px solid transparent;
     background-color: rgba(255, 255, 255, 0.3);
@@ -650,7 +655,7 @@ ul {
 }
 
 .checkmark-purple {
-    color: var(--purple-light);
+    color: var(--purple-main);
 }
 
 .checkmark-blue {
@@ -731,9 +736,8 @@ ul {
 }
 
 .team-role {
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 1rem;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
 }
 
 .role-purple {
@@ -808,7 +812,7 @@ ul {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--purple-main);
-    box-shadow: 0 0 0 2px rgba(147, 51, 234, 0.5);
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.5);
 }
 
 .form-consent {
