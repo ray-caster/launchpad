@@ -9,6 +9,9 @@
     1. Global Styles & Variables (Non-Critical)
 -----------------------------------------------------------------
 */
+body {
+    background-color: red !important;
+}
 
 :root {
     /* Colors */
