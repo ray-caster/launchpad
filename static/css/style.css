@@ -1,6 +1,6 @@
 /*
 =================================================================
-    LAUNCHPAD.ORG - VANILLA CSS STYLESHEET (FINAL)
+    LAUNCHPAD.ORG - VANILLA CSS STYLESHEET (FINAL VIBRANCY FIX)
 =================================================================
 */
 
@@ -22,11 +22,11 @@
     --text-medium: #cbd5e1;
     --text-dark: #94a3b8;
 
-    /* FIX: New high-contrast, vibrant colors for roles */
-    --purple-vibrant-accessible: #be85f5;
-    /* Vibrant and passes contrast checks */
-    --blue-vibrant-accessible: #77aaf2;
-    /* Vibrant and passes contrast checks */
+    /* FINAL VIBRANCY FIX: New, brighter, and fully accessible colors */
+    --purple-vibrant-accessible: #d8b4fe;
+    /* A bright, vibrant lavender */
+    --blue-vibrant-accessible: #93c5fd;
+    /* A bright, vibrant sky blue */
 
     /* Spacing */
     --container-padding: 1.5rem;
@@ -180,7 +180,6 @@ ul {
 }
 
 /* --- Hero Section (continued) --- */
-/* ACCESSIBILITY FIX: Larger touch targets for carousel dots */
 .hero-dots {
     position: absolute;
     bottom: 2rem;
@@ -188,18 +187,14 @@ ul {
     transform: translateX(-50%);
     display: flex;
     gap: 0.75rem;
-    /* Increased gap */
     z-index: 10;
 }
 
 .hero-dots button {
     width: 1rem;
-    /* Increased size */
     height: 1rem;
-    /* Increased size */
     border-radius: 50%;
     border: 2px solid transparent;
-    /* Add border for focus state */
     background-color: rgba(255, 255, 255, 0.3);
     cursor: pointer;
     transition: all 0.3s ease;
@@ -251,7 +246,6 @@ ul {
 /* Hero Community Card */
 .hero-community-card {
     display: none;
-    /* Hidden on mobile */
     background-color: rgba(51, 65, 85, 0.5);
     border-radius: 1rem;
     padding: 1.5rem;
@@ -468,7 +462,6 @@ ul {
     margin-top: 5px;
 }
 
-/* FIX: Dedicated classes for checkmark colors */
 .checkmark-purple {
     color: var(--purple-light);
 }
@@ -551,11 +544,13 @@ ul {
 }
 
 .team-role {
-    font-weight: 500;
+    font-weight: 600;
+    /* FINAL VIBRANCY FIX: Bolder font */
     margin-bottom: 1rem;
+    /* FINAL VIBRANCY FIX: Added a glow effect */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.15);
 }
 
-/* FIX: Using the new vibrant, accessible colors */
 .role-purple {
     color: var(--purple-vibrant-accessible);
 }
@@ -568,7 +563,6 @@ ul {
     color: var(--green-main);
 }
 
-/* Green was already compliant */
 .team-bio {
     font-size: 0.875rem;
     color: var(--text-medium);
