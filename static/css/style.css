@@ -1,6 +1,6 @@
 /*
 =================================================================
-    LAUNCHPAD.ORG - VANILLA CSS STYLESHEET (OPTIMIZED)
+    LAUNCHPAD.ORG - VANILLA CSS STYLESHEET (FINAL)
 =================================================================
 */
 
@@ -22,11 +22,11 @@
     --text-medium: #cbd5e1;
     --text-dark: #94a3b8;
 
-    /* ACCESSIBILITY FIX: New high-contrast colors */
-    --purple-accessible: #c084fc;
-    /* Brighter purple for text */
-    --blue-accessible: #60a5fa;
-    /* Brighter blue for text */
+    /* FIX: New high-contrast, vibrant colors for roles */
+    --purple-vibrant-accessible: #be85f5;
+    /* Vibrant and passes contrast checks */
+    --blue-vibrant-accessible: #77aaf2;
+    /* Vibrant and passes contrast checks */
 
     /* Spacing */
     --container-padding: 1.5rem;
@@ -468,6 +468,19 @@ ul {
     margin-top: 5px;
 }
 
+/* FIX: Dedicated classes for checkmark colors */
+.checkmark-purple {
+    color: var(--purple-light);
+}
+
+.checkmark-blue {
+    color: var(--blue-main);
+}
+
+.checkmark-green {
+    color: var(--green-main);
+}
+
 .icon-purple {
     background-color: var(--purple-main);
     color: var(--text-light);
@@ -542,13 +555,13 @@ ul {
     margin-bottom: 1rem;
 }
 
-/* ACCESSIBILITY FIX: Using high-contrast colors */
+/* FIX: Using the new vibrant, accessible colors */
 .role-purple {
-    color: var(--purple-accessible);
+    color: var(--purple-vibrant-accessible);
 }
 
 .role-blue {
-    color: var(--blue-accessible);
+    color: var(--blue-vibrant-accessible);
 }
 
 .role-green {
