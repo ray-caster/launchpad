@@ -18,9 +18,12 @@
     <link rel="canonical" href="https://www.launchpd.org">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180"
+        href="{{ url_for('static', filename='images/apple-touch-icon.webp') }}">
+    <link rel="icon" type="image/png" sizes="32x32"
+        href="{{ url_for('static', filename='images/favicon-32x32.webp') }}">
+    <link rel="icon" type="image/png" sizes="16x16"
+        href="{{ url_for('static', filename='images/favicon-16x16.webp') }}">
     <link rel="manifest" href="{{ url_for('static', filename='site.webmanifest') }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@400;600;700&family=Red+Hat+Display:wght@400;700&display=swap');
@@ -156,13 +159,13 @@
                 <div class="relative w-full h-full">
                     <div id="hero-carousel" class="absolute inset-0 transition-opacity duration-1000 ease-in-out">
                         <div class="hero-slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out"
-                            style="background-image: url('{{ url_for('static', filename='images/background1.jpg') }}')"
+                            style="background-image: url('{{ url_for('static', filename='images/background1.webp') }}')"
                             data-active="true"></div>
                         <div class="hero-slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out"
-                            style="background-image: url('{{ url_for('static', filename='images/background2.jpg') }}')">
+                            style="background-image: url('{{ url_for('static', filename='images/background2.webp') }}')">
                         </div>
                         <div class="hero-slide absolute inset-0 bg-cover bg-center opacity-0 transition-opacity duration-1000 ease-in-out"
-                            style="background-image: url('{{ url_for('static', filename='images/background3.jpg') }}')">
+                            style="background-image: url('{{ url_for('static', filename='images/background3.webp') }}')">
                         </div>
                     </div>
                     <div class="hero-overlay bg-gradient-to-b from-black/80 via-black/20 to-black/40 backdrop-blur-sm">
@@ -323,7 +326,7 @@
                             class="absolute -top-10 -left-10 w-64 h-64 bg-purple-500 rounded-full filter blur-3xl opacity-10">
                         </div>
                         <div class="relative bg-gradient-to-br from-purple-900/30 to-blue-900/30 rounded-2xl p-1">
-                            <img src="{{ url_for('static', filename='images/working.jpg') }}"
+                            <img src="{{ url_for('static', filename='images/working.webp') }}"
                                 alt="Students working on robotics" class="rounded-xl w-full">
                         </div>
                     </div>
@@ -487,7 +490,7 @@
                         class="bg-gray-800 rounded-3xl p-10 text-center border-2 border-gray-700 card-hover hover:border-purple-500/50 transition-all duration-300">
                         <div
                             class="w-40 h-40 mx-auto mb-8 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 p-1">
-                            <img src="{{ url_for('static', filename='images/max.jpg') }}" alt="Maximillian Eugene"
+                            <img src="{{ url_for('static', filename='images/max.webp') }}" alt="Maximillian Eugene"
                                 class="w-full h-full rounded-full object-cover">
                         </div>
                         <h3 class="text-xl font-bold text-white mb-2">Maximillian Eugene</h3>
@@ -522,7 +525,7 @@
                     <div class="bg-gray-800 rounded-2xl p-8 text-center border border-gray-700 card-hover">
                         <div
                             class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-green-500 p-1">
-                            <img src="{{ url_for('static', filename='images/stanley.jpg') }}" alt="Stanley Sentosa"
+                            <img src="{{ url_for('static', filename='images/stanley.webp') }}" alt="Stanley Sentosa"
                                 class="w-full h-full rounded-full object-cover">
                         </div>
                         <h3 class="text-xl font-bold text-white mb-2">Stanley Sentosa</h3>
@@ -554,7 +557,7 @@
                     <div class="bg-gray-800 rounded-2xl p-8 text-center border border-gray-700 card-hover">
                         <div
                             class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-500 to-purple-500 p-1">
-                            <img src="{{ url_for('static', filename='images/dylan.jpg') }}" alt="Dylan Bradley"
+                            <img src="{{ url_for('static', filename='images/dylan.webp') }}" alt="Dylan Bradley"
                                 class="w-full h-full rounded-full object-cover">
                         </div>
                         <h3 class="text-xl font-bold text-white mb-2">Dylan Bradley</h3>
@@ -586,8 +589,8 @@
                         <div
                             class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 p-1">
                             <!-- NOTE: Replace with the actual image path -->
-                            <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Olivia Catherine"
-                                class="w-full h-full rounded-full object-cover">
+                            <img src="{{ url_for('static', filename='images/placeholder.webp') }}"
+                                alt="Olivia Catherine" class="w-full h-full rounded-full object-cover">
                         </div>
                         <h3 class="text-xl font-bold text-white mb-2">Olivia Catherine</h3>
                         <p class="text-purple-400 font-medium mb-4">Head of Content & Digital Media</p>
@@ -613,7 +616,7 @@
                         <div
                             class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-green-500 p-1">
                             <!-- NOTE: Replace with the actual image path -->
-                            <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Janice Ohara"
+                            <img src="{{ url_for('static', filename='images/placeholder.webp') }}" alt="Janice Ohara"
                                 class="w-full h-full rounded-full object-cover">
                         </div>
                         <h3 class="text-xl font-bold text-white mb-2">Janice Ohara</h3>
@@ -637,7 +640,7 @@
                         <div
                             class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-500 to-purple-500 p-1">
                             <!-- NOTE: Replace with the actual image path -->
-                            <img src="{{ url_for('static', filename='images/glint.png') }}" alt="Glint Heraldo"
+                            <img src="{{ url_for('static', filename='images/glint.webp') }}" alt="Glint Heraldo"
                                 class="w-full h-full rounded-full object-cover">
                         </div>
                         <h3 class="text-xl font-bold text-white mb-2">Glint Heraldo</h3>
@@ -661,7 +664,7 @@
                         <div
                             class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 p-1">
                             <!-- NOTE: Replace with the actual image path -->
-                            <img src="{{ url_for('static', filename='images/placeholder.jpg') }}" alt="Joseph Dylan"
+                            <img src="{{ url_for('static', filename='images/placeholder.webp') }}" alt="Joseph Dylan"
                                 class="w-full h-full rounded-full object-cover">
                         </div>
                         <h3 class="text-xl font-bold text-white mb-2">Joseph Dylan</h3>
