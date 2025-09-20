@@ -6,17 +6,46 @@
 
 /* 
 -----------------------------------------------------------------
-    1. CRITICAL, INLINED STYLES (MOVED FROM HTML)
+    1. Global Styles & Variables
 -----------------------------------------------------------------
 */
+
 :root {
+    /* Fonts */
     --font-body: 'Space Grotesk', sans-serif;
     --font-heading: 'Orbitron', sans-serif;
     --font-logo: 'Red Hat Display', sans-serif;
+
+    /* Original Tailwind-based colors */
+    --purple-main: #8b5cf6;
+    /* Original purple-500 */
+    --purple-dark: #7c3aed;
+    /* Original purple-600 */
+    --blue-main: #60a5fa;
+    /* Original blue-400 */
+    --green-main: #34d399;
+    /* Original green-400 */
+
+    /* General UI Colors */
     --dark-bg: #0f172a;
+    --dark-card: #1e293b;
+    --dark-border: #334155;
     --text-light: #f8fafc;
+    --text-medium: #cbd5e1;
+    --text-dark: #94a3b8;
+
+    /* VIBRANT & ACCESSIBLE colors */
+    --purple-vibrant-accessible: #c4b5fd;
+    /* Brighter, accessible version of purple-400 */
+    --blue-vibrant-accessible: #93c5fd;
+    /* Brighter, accessible version of blue-400 */
+
+    /* Spacing */
+    --container-padding: 1.5rem;
+    --section-padding: 5rem;
 }
 
+/* Base & Reset */
 *,
 :after,
 :before {
@@ -49,9 +78,20 @@ h1 {
 }
 
 a {
-    color: var(--purple-light);
+    color: var(--purple-main);
     text-decoration: none;
     transition: color .2s ease
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .orbitron {
@@ -65,181 +105,9 @@ a {
     color: transparent
 }
 
-.main-nav {
-    position: fixed;
-    width: 100%;
-    z-index: 100;
-    top: 0;
-    left: 0;
-    padding: 1.5rem 0;
-    background-color: rgba(15, 23, 42, .8);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid #334155
-}
-
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 80rem;
-    margin: 0 auto;
-    padding: 0 1.5rem
-}
-
-.nav-logo {
-    display: flex;
-    align-items: center;
-    gap: .75rem
-}
-
-.logo-img {
-    height: 2rem
-}
-
-.logo-text {
-    font-family: var(--font-logo);
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--text-light);
-    text-shadow: 0 0 8px rgba(248, 248, 248, .5)
-}
-
-.desktop-menu {
-    display: none
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center
-}
-
-.mobile-menu-toggle {
-    background: 0 0;
-    border: none;
-    color: #cbd5e1;
-    font-size: 1.5rem;
-    cursor: pointer
-}
-
-.hero-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 8rem;
-    padding-bottom: 4rem;
-    position: relative;
-    overflow: hidden
-}
-
-.hero-background {
-    position: absolute;
-    inset: 0;
-    z-index: -1
-}
-
-#hero-carousel {
-    position: absolute;
-    inset: 0
-}
-
-.hero-slide {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1.5s ease-in-out
-}
-
-.hero-slide[data-active=true] {
-    opacity: 1
-}
-
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(15, 23, 42, .8), rgba(15, 23, 42, .4), rgba(15, 23, 42, .8));
-    backdrop-filter: blur(2px)
-}
-
-.hero-headline {
-    font-size: 3.5rem;
-    font-weight: 700;
-    line-height: 1.1;
-    margin-bottom: 1.5rem
-}
-
-@media (min-width:768px) {
-    h1 {
-        font-size: 4rem
-    }
-
-    .hero-headline {
-        font-size: 4.5rem
-    }
-
-    .desktop-menu {
-        display: flex;
-        gap: 2rem
-    }
-}
-
-@media (min-width:1024px) {
-    .mobile-menu-toggle {
-        display: none
-    }
-}
-
 /* 
 -----------------------------------------------------------------
-    2. Global Styles & Variables (Non-Critical)
------------------------------------------------------------------
-*/
-
-:root {
-    /* Original Tailwind-based colors */
-    --purple-main: #8b5cf6;
-    /* Original purple-500 */
-    --purple-dark: #7c3aed;
-    /* Original purple-600 */
-    --blue-main: #60a5fa;
-    /* Original blue-400 */
-    --green-main: #34d399;
-    /* Original green-400 */
-
-    /* General UI Colors */
-    --dark-card: #1e293b;
-    --dark-border: #334155;
-    --text-medium: #cbd5e1;
-    --text-dark: #94a3b8;
-
-    /* FINAL VIBRANCY FIX: Brightened, accessible versions of the original colors */
-    --purple-vibrant-accessible: #c4b5fd;
-    /* Brighter, accessible version of purple-400 */
-    --blue-vibrant-accessible: #93c5fd;
-    /* Brighter, accessible version of blue-400 */
-
-    /* Spacing */
-    --container-padding: 1.5rem;
-    --section-padding: 5rem;
-}
-
-/* Base & Reset (continued) */
-p {
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* 
------------------------------------------------------------------
-    3. Utility & Helper Classes
+    2. Utility & Helper Classes
 -----------------------------------------------------------------
 */
 .container {
@@ -308,7 +176,7 @@ ul {
 
 /* 
 -----------------------------------------------------------------
-    4. Page Sections & Components (Non-Critical)
+    3. Page Sections & Components
 -----------------------------------------------------------------
 */
 
@@ -343,7 +211,63 @@ ul {
     }
 }
 
-/* --- Main Navigation (continued) --- */
+/* --- Navigation --- */
+.main-nav {
+    position: fixed;
+    width: 100%;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    padding: 1.5rem 0;
+    background-color: rgba(15, 23, 42, .8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--dark-border)
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 var(--container-padding)
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: .75rem
+}
+
+.logo-img {
+    height: 2rem
+}
+
+.logo-text {
+    font-family: var(--font-logo);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-shadow: 0 0 8px rgba(248, 248, 248, .5)
+}
+
+.desktop-menu {
+    display: none
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center
+}
+
+.mobile-menu-toggle {
+    background: 0 0;
+    border: none;
+    color: #cbd5e1;
+    font-size: 1.5rem;
+    cursor: pointer
+}
+
 .desktop-menu a {
     color: var(--text-medium);
     font-weight: 500;
@@ -371,7 +295,62 @@ ul {
     padding: 0.5rem;
 }
 
-/* --- Hero Section (continued) --- */
+/* --- Hero Section --- */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 8rem;
+    padding-bottom: 4rem;
+    position: relative;
+    overflow: hidden
+}
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: -1
+}
+
+#hero-carousel {
+    position: absolute;
+    inset: 0
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out
+}
+
+.hero-slide[data-active=true] {
+    opacity: 1
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(15, 23, 42, .8), rgba(15, 23, 42, .4), rgba(15, 23, 42, .8));
+    backdrop-filter: blur(2px)
+}
+
+.hero-headline {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem
+}
+
+/* CLS FIX: Reserve space for the hero text block to prevent layout shift */
+.hero-text-content {
+    min-height: 320px;
+    /* Adjust this value if needed */
+}
+
 .hero-dots {
     position: absolute;
     bottom: 2rem;
@@ -401,7 +380,6 @@ ul {
 .hero-dots button:focus-visible {
     border-color: var(--blue-main);
 }
-
 
 .hero-content-container {
     width: 100%;
@@ -435,7 +413,6 @@ ul {
     gap: 1rem;
 }
 
-/* Hero Community Card */
 .hero-community-card {
     display: none;
     background-color: rgba(51, 65, 85, 0.5);
@@ -939,12 +916,25 @@ ul {
 
 /* 
 -----------------------------------------------------------------
-    5. Responsive Media Queries
+    4. Responsive Media Queries
 -----------------------------------------------------------------
 */
 
 /* Medium screens (tablets) */
 @media (min-width: 768px) {
+    h1 {
+        font-size: 4rem
+    }
+
+    .hero-headline {
+        font-size: 4.5rem
+    }
+
+    .desktop-menu {
+        display: flex;
+        gap: 2rem
+    }
+
     .hero-actions {
         flex-direction: row;
     }
@@ -988,6 +978,10 @@ ul {
 
 /* Large screens (desktops) */
 @media (min-width: 1024px) {
+    .mobile-menu-toggle {
+        display: none
+    }
+
     .nav-join-btn {
         display: inline-block;
     }
