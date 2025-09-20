@@ -9,20 +9,210 @@
         content="Launchpad Robotics provides hands-on STEM education and robotics programs for students in Surabaya. Join our community of young innovators building technology solutions.">
     <meta name="keywords" content="robotics, STEM education, Surabaya, coding, electronics, student programs">
     <meta name="author" content="Launchpad Robotics">
-    <meta property="og:title" content="Launchpad.org | STEM Education & Robotics Programs">
-    <meta property="og:description" content="Hands-on STEM education and robotics programs for students in Surabaya">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://www.launchpd.org">
-    <meta property="og:image" content="{{ url_for('static', filename='images/logo.webp', _external=True) }}">
-    <meta name="twitter:card" content="summary_large_image">
-    <link rel="canonical" href="https://www.launchpd.org">
 
-    <!-- THE ONLY STYLESHEET YOU NEED -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- CRITICAL PERFORMANCE FIX: Preconnect to external font/icon servers -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
 
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CRITICAL PERFORMANCE FIX: Load external stylesheets asynchronously -->
+    <!-- Google Fonts with display=swap -->
+    <link rel="stylesheet" media="print" onload="this.media='all'"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@400;600;700&family=Red+Hat+Display:wght@400;700&display=swap">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" media="print" onload="this.media='all'"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- CRITICAL PERFORMANCE FIX: Inlined CSS for above-the-fold content -->
+    <style>
+        :root {
+            --font-body: 'Space Grotesk', sans-serif;
+            --font-heading: 'Orbitron', sans-serif;
+            --font-logo: 'Red Hat Display', sans-serif;
+            --dark-bg: #0f172a;
+            --text-light: #f8fafc
+        }
+
+        *,
+        :after,
+        :before {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: var(--text-light);
+            line-height: 1.2;
+            margin-top: 0
+        }
+
+        h1 {
+            font-size: 3rem
+        }
+
+        a {
+            color: var(--purple-light);
+            text-decoration: none;
+            transition: color .2s ease
+        }
+
+        .orbitron {
+            font-family: var(--font-heading)
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        .main-nav {
+            position: fixed;
+            width: 100%;
+            z-index: 100;
+            top: 0;
+            left: 0;
+            padding: 1.5rem 0;
+            background-color: rgba(15, 23, 42, .8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #334155
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 0 1.5rem
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: .75rem
+        }
+
+        .logo-img {
+            height: 2rem
+        }
+
+        .logo-text {
+            font-family: var(--font-logo);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-light);
+            text-shadow: 0 0 8px rgba(248, 248, 248, .5)
+        }
+
+        .desktop-menu {
+            display: none
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center
+        }
+
+        .mobile-menu-toggle {
+            background: 0 0;
+            border: none;
+            color: #cbd5e1;
+            font-size: 1.5rem;
+            cursor: pointer
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero-background {
+            position: absolute;
+            inset: 0;
+            z-index: -1
+        }
+
+        #hero-carousel {
+            position: absolute;
+            inset: 0
+        }
+
+        .hero-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out
+        }
+
+        .hero-slide[data-active=true] {
+            opacity: 1
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, .8), rgba(15, 23, 42, .4), rgba(15, 23, 42, .8));
+            backdrop-filter: blur(2px)
+        }
+
+        .hero-headline {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem
+        }
+
+        @media (min-width:768px) {
+            h1 {
+                font-size: 4rem
+            }
+
+            .hero-headline {
+                font-size: 4.5rem
+            }
+
+            .desktop-menu {
+                display: flex;
+                gap: 2rem
+            }
+        }
+
+        @media (min-width:1024px) {
+            .mobile-menu-toggle {
+                display: none
+            }
+        }
+    </style>
+
+    <!-- The rest of your CSS, loaded asynchronously -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" media="print"
+        onload="this.media='all'">
+
+    <!-- Favicons and Manifest -->
     <link rel="apple-touch-icon" sizes="180x180"
         href="{{ url_for('static', filename='images/apple-touch-icon.webp') }}">
     <link rel="icon" type="image/png" sizes="32x32"
@@ -40,7 +230,8 @@
     <nav class="main-nav">
         <div class="nav-container">
             <a href="/" class="nav-logo">
-                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Launchpad Logo" class="logo-img">
+                <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Launchpad Logo" class="logo-img"
+                    width="32" height="32">
                 <span class="logo-text">Launchpad.org</span>
             </a>
             <div class="desktop-menu">
@@ -178,7 +369,7 @@
                     </div>
                     <div class="about-image">
                         <img loading="lazy" src="{{ url_for('static', filename='images/working.webp') }}"
-                            alt="Students working on robotics">
+                            alt="Students working on robotics" width="800" height="600">
                     </div>
                 </div>
             </div>
@@ -287,8 +478,7 @@
                                     class="fab fa-instagram"></i></a>
                             <a href="https://www.linkedin.com/in/maximillian-eugene-53270a309"
                                 aria-label="Maximillian's LinkedIn"><i class="fab fa-linkedin"></i></a>
-                            <a href="https://github.com/ray-caster" aria-label="Maximillian's Github"><i
-                                    class="fab fa-github"></i></a>
+                            <a href="#" aria-label="Maximillian's Github"><i class="fab fa-github"></i></a>
                             <a href="mailto:max.eugene.important@gmail.com" aria-label="Email Maximillian"><i
                                     class="fas fa-envelope"></i></a>
                         </div>
@@ -310,6 +500,7 @@
                                     class="fab fa-instagram"></i></a>
                             <a href="https://www.linkedin.com/in/stanley-sentosa-295062333"
                                 aria-label="Stanley's LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="Stanley's Github"><i class="fab fa-github"></i></a>
                             <a href="mailto:stanleyhuang1109@gmail.com" aria-label="Email Stanley"><i
                                     class="fas fa-envelope"></i></a>
                         </div>
@@ -327,6 +518,8 @@
                         <div class="team-socials">
                             <a href="https://www.instagram.com/dylan_bradley16" aria-label="Dylan's Instagram"><i
                                     class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Dylan's LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="Dylan's Github"><i class="fab fa-github"></i></a>
                             <a href="mailto:stellarst4r@gmail.com" aria-label="Email Dylan"><i
                                     class="fas fa-envelope"></i></a>
                         </div>
@@ -334,7 +527,7 @@
                     <!-- Olivia -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-purple">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/oliv.webp') }}"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/olivia.webp') }}"
                                 alt="Olivia Catherine">
                         </div>
                         <h3>Olivia Catherine</h3>
@@ -353,7 +546,7 @@
                     <!-- Janice -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-blue">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/jane.webp') }}"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/janice.webp') }}"
                                 alt="Janice Ohara">
                         </div>
                         <h3>Janice Ohara</h3>
@@ -362,6 +555,7 @@
                             brand experience across all platforms.</p>
                         <div class="team-socials">
                             <a href="#" aria-label="Janice's Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Janice's LinkedIn"><i class="fab fa-linkedin"></i></a>
                             <a href="#" aria-label="Email Janice"><i class="fas fa-envelope"></i></a>
                         </div>
                     </div>
@@ -384,7 +578,7 @@
                     <!-- Joseph -->
                     <div class="team-card card-hover">
                         <div class="team-photo-wrapper photo-purple">
-                            <img loading="lazy" src="{{ url_for('static', filename='images/josephdylan.webp') }}"
+                            <img loading="lazy" src="{{ url_for('static', filename='images/joseph.webp') }}"
                                 alt="Joseph Dylan">
                         </div>
                         <h3>Joseph Dylan</h3>
@@ -392,10 +586,9 @@
                         <p class="team-bio">Driving growth and community engagement through strategic digital marketing
                             campaigns and outreach initiatives.</p>
                         <div class="team-socials">
-                            <a href="https://www.instagram.com/josephdylan.g" aria-label="Joseph's Instagram"><i
-                                    class="fab fa-instagram"></i></a>
-                            <a href="mailto:gjosephdylan@gmail.com" aria-label="Email Joseph"><i
-                                    class="fas fa-envelope"></i></a>
+                            <a href="#" aria-label="Joseph's Instagram"><i class="fab fa-instagram"></i></a>
+                            <a href="#" aria-label="Joseph's LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" aria-label="Email Joseph"><i class="fas fa-envelope"></i></a>
                         </div>
                     </div>
                 </div>
@@ -455,9 +648,12 @@
                         <p class="testimonial-body">"Joining robotics club has not only helped me learn about coding and
                             programs, it also helped me with my problem-solving and critical thinking skills... a very
                             memorable experience for me."</p>
-                        <div class="testimonial-rating" aria-label="5 out of 5 stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <div class="testimonial-rating" role="img">
+                            <span class="sr-only">5 out of 5 stars</span>
+                            <i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star"
+                                aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i
+                                class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star"
+                                aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="testimonial-card">
@@ -470,9 +666,12 @@
                         </div>
                         <p class="testimonial-body">"Learning robotics made me realise my weaknesses and how to improve
                             them, also it's fun seeing all of our friends different ideas!"</p>
-                        <div class="testimonial-rating" aria-label="4.5 out of 5 stars">
-                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
-                                class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <div class="testimonial-rating" role="img">
+                            <span class="sr-only">4.5 out of 5 stars</span>
+                            <i class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star"
+                                aria-hidden="true"></i><i class="fas fa-star" aria-hidden="true"></i><i
+                                class="fas fa-star" aria-hidden="true"></i><i class="fas fa-star-half-alt"
+                                aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
