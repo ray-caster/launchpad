@@ -55,9 +55,7 @@ def init_db():
     """Clear the existing data and create new tables."""
     db.create_all()
     app.logger.info("Initialized the database.")
-@app.route('/app-ads.txt')
-def serve_app_ads():
-    return send_from_directory('.', 'app-ads.txt')
+
 @app.route('/git-webhook', methods=['POST'])
 def git_webhook():
     secret = os.environ.get("GITHUB_WEBHOOK_SECRET", "")
@@ -79,7 +77,9 @@ def git_webhook():
 @app.route('/')
 def index():
     return render_template('home.html')
-
+@app.route('/app-ads.txt')
+def serve_app_ads():
+    return send_from_directory('static', 'app-ads.txt')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'user_id' in session:
