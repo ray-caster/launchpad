@@ -1,39 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Launchpad.org</title>
-    <meta name="description" content="Login to your Launchpad Robotics account to access STEM education and robotics programs.">
+    <meta name="description"
+        content="Login to your Launchpad Robotics account to access STEM education and robotics programs.">
     <meta name="keywords" content="login, robotics, STEM education, Surabaya, coding, electronics">
     <meta name="author" content="Launchpad Robotics">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Grotesk:wght@400;600;700&family=Red+Hat+Display:wght@400;700&display=swap');
-        :root { --primary: #6d28d9; --secondary: #10b981; --dark: #0f172a; --light: #f8fafc; }
-        body { font-family: 'Space Grotesk', sans-serif; background-color: var(--dark); color: var(--light); min-height: 100vh; }
-        .orbitron { font-family: 'Orbitron', sans-serif; }
-        .gradient-text { background: linear-gradient(90deg, #8b5cf6, #3b82f6, #10b981); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; will-change: opacity; }
-        .input-focus:focus { box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3); }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
-        .delay-100 { animation-delay: 0.1s; } .delay-200 { animation-delay: 0.2s; } .delay-300 { animation-delay: 0.3s; }
+
+        :root {
+            --primary: #6d28d9;
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --light: #f8fafc;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        .orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6, #10b981);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            will-change: opacity;
+        }
+
+        .input-focus:focus {
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .delay-100 {
+            animation-delay: 0.1s;
+        }
+
+        .delay-200 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-300 {
+            animation-delay: 0.3s;
+        }
     </style>
 </head>
+
 <body class="relative overflow-x-hidden">
     <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
     <!-- Star Background -->
     <div id="stars-container" class="fixed inset-0 overflow-hidden -z-10"></div>
-    
+
     <!-- Navigation -->
-    <nav class="py-6 px-4 md:px-12 backdrop-blur-md bg-opacity-80 bg-gray-900 fixed w-full z-50 border-b border-gray-800">
+    <nav
+        class="py-6 px-4 md:px-12 backdrop-blur-md bg-opacity-80 bg-gray-900 fixed w-full z-50 border-b border-gray-800">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <a href="{{ url_for('index') }}" class="flex items-center space-x-2">
                 <!-- Assuming you have a logo image in your static folder -->
                 <!-- <img src="{{ url_for('static', filename='images/logo.webp" alt="Launchpad Logo" class="h-8"> -->
-                <span class="font-['Red_Hat_Display'] text-2xl font-bold text-[#f8f8f8] drop-shadow-[0_0_8px_rgba(248,248,248,0.8)]">Launchpad.org</span>
+                <span
+                    class="font-\['Red_Hat_Display'\] text-2xl font-bold text-[#f8f8f8] drop-shadow-[0_0_8px_rgba(248,248,248,0.8)]">
+                    Launchpad.org
+                </span>
             </a>
             <div class="hidden lg:flex items-center space-x-8">
                 <a href="/#about" class="text-gray-300 hover:text-white transition">About</a>
@@ -41,65 +104,80 @@
                 <a href="/#mission" class="text-gray-300 hover:text-white transition">Mission</a>
             </div>
             <div class="hidden lg:block">
-                <a href="{{ url_for('signup') }}" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20">
+                <a href="{{ url_for('signup') }}"
+                    class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20">
                     Sign Up
                 </a>
             </div>
             <button id="mobile-menu-button" class="lg:hidden text-gray-300">
                 <i class="fas fa-bars text-2xl"></i>
             </button>
-            <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 bg-gray-900 backdrop-blur-md bg-opacity-95 border-t border-gray-800 py-4 px-6 lg:hidden">
+            <div id="mobile-menu"
+                class="hidden absolute top-full left-0 right-0 bg-gray-900 backdrop-blur-md bg-opacity-95 border-t border-gray-800 py-4 px-6 lg:hidden">
                 <div class="flex flex-col space-y-4">
                     <a href="/#about" class="text-gray-300 hover:text-white transition">About</a>
                     <a href="/#programs" class="text-gray-300 hover:text-white transition">Programs</a>
                     <a href="/#mission" class="text-gray-300 hover:text-white transition">Mission</a>
-                    <a href="{{ url_for('signup') }}" class="mt-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20 text-center">
+                    <a href="{{ url_for('signup') }}"
+                        class="mt-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-full font-medium transition shadow-lg shadow-purple-500/20 text-center">
                         Sign Up
                     </a>
                 </div>
             </div>
         </div>
     </nav>
-    
+
     <main id="main-content" class="min-h-screen flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8 pt-32">
         <div class="w-full max-w-md space-y-8">
             <div class="text-center animate-fade-in-up">
-                 <h2 class="mt-6 orbitron text-3xl font-bold text-white"><span class="gradient-text">Welcome Back</span></h2>
-                 <p class="mt-2 text-sm text-gray-400">Sign in to access your STEM learning dashboard</p>
+                <h2 class="mt-6 orbitron text-3xl font-bold text-white"><span class="gradient-text">Welcome Back</span>
+                </h2>
+                <p class="mt-2 text-sm text-gray-400">Sign in to access your STEM learning dashboard</p>
             </div>
 
-            <div class="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 shadow-lg animate-fade-in-up delay-100">
+            <div
+                class="bg-gray-800/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 shadow-lg animate-fade-in-up delay-100">
                 <form id="login-form" class="space-y-6" action="{{ url_for('login') }}" method="POST">
-                    
+
                     {% with messages = get_flashed_messages(with_categories=true) %}
-                      {% if messages %}
-                        {% for category, message in messages %}
-                          <div class="bg-red-900/50 text-red-300 px-4 py-3 rounded-md text-sm">
-                              {{ message }}
-                          </div>
-                        {% endfor %}
-                      {% endif %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="bg-red-900/50 text-red-300 px-4 py-3 rounded-md text-sm">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
                     {% endwith %}
-                    
+
                     <div class="space-y-4">
                         <div class="animate-fade-in-up delay-200">
                             <label for="email" class="sr-only">Email address</label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-envelope text-gray-500"></i></div>
-                                <input id="email" name="email" type="email" autocomplete="email" required class="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400 input-focus" placeholder="Email address">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i
+                                        class="fas fa-envelope text-gray-500"></i></div>
+                                <input id="email" name="email" type="email" autocomplete="email" required
+                                    class="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400 input-focus"
+                                    placeholder="Email address">
                             </div>
                         </div>
                         <div class="animate-fade-in-up delay-300">
                             <label for="password" class="sr-only">Password</label>
                             <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i class="fas fa-lock text-gray-500"></i></div>
-                                <input id="password" name="password" type="password" autocomplete="current-password" required class="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400 input-focus" placeholder="Password">
-                                <button type="button" id="toggle-password" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300"><i class="fas fa-eye-slash"></i></button>
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"><i
+                                        class="fas fa-lock text-gray-500"></i></div>
+                                <input id="password" name="password" type="password" autocomplete="current-password"
+                                    required
+                                    class="w-full pl-10 pr-3 py-3 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 text-white placeholder-gray-400 input-focus"
+                                    placeholder="Password">
+                                <button type="button" id="toggle-password"
+                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-300"><i
+                                        class="fas fa-eye-slash"></i></button>
                             </div>
                         </div>
                     </div>
                     <div class="animate-fade-in-up delay-300">
-                        <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors shadow-lg shadow-purple-500/20">
+                        <button type="submit"
+                            class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-colors shadow-lg shadow-purple-500/20">
                             Sign in
                         </button>
                     </div>
@@ -108,20 +186,21 @@
 
             <p class="text-center text-sm text-gray-400 animate-fade-in-up delay-200">
                 Don't have an account?
-                <a href="{{ url_for('signup') }}" class="font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                <a href="{{ url_for('signup') }}"
+                    class="font-medium text-purple-400 hover:text-purple-300 transition-colors">
                     Sign up
                 </a>
             </p>
         </div>
     </main>
-    
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Mobile menu toggle
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', function() {
+                mobileMenuButton.addEventListener('click', function () {
                     mobileMenu.classList.toggle('hidden');
                 });
             }
@@ -134,7 +213,7 @@
                     const star = document.createElement('div');
                     star.classList.add('star');
                     const size = Math.random() * 2 + 1;
-                    star.style.cssText = `width:${size}px; height:${size}px; left:${Math.random()*100}%; top:${Math.random()*100}%; opacity:${Math.random()}; animation:twinkle ${5+Math.random()*10}s infinite ${Math.random()*5}s ease-in-out;`;
+                    star.style.cssText = `width:${size}px; height:${size}px; left:${Math.random() * 100}%; top:${Math.random() * 100}%; opacity:${Math.random()}; animation:twinkle ${5 + Math.random() * 10}s infinite ${Math.random() * 5}s ease-in-out;`;
                     fragment.appendChild(star);
                 }
                 starsContainer.appendChild(fragment);
@@ -147,7 +226,7 @@
             const togglePassword = document.getElementById('toggle-password');
             const passwordInput = document.getElementById('password');
             if (togglePassword && passwordInput) {
-                togglePassword.addEventListener('click', function() {
+                togglePassword.addEventListener('click', function () {
                     const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                     passwordInput.setAttribute('type', type);
                     this.querySelector('i').classList.toggle('fa-eye');
@@ -157,4 +236,5 @@
         });
     </script>
 </body>
+
 </html>
