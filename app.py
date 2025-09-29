@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, session, redirect, url_for, flash, abort
+from flask import Flask, render_template, request, session, redirect, url_for, flash, abort, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 import hmac
@@ -55,7 +55,9 @@ def init_db():
     """Clear the existing data and create new tables."""
     db.create_all()
     app.logger.info("Initialized the database.")
-
+@app.route('/app-ads.txt')
+def serve_app_ads():
+    return send_from_directory('.', 'app-ads.txt')
 @app.route('/git-webhook', methods=['POST'])
 def git_webhook():
     secret = os.environ.get("GITHUB_WEBHOOK_SECRET", "")
